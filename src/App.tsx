@@ -119,8 +119,8 @@ function App(): JSX.Element {
             justifyContent="right"
             alignItems="center"
           >
-            {togglePunchline && (
-              <Grow in={!loading} mountOnEnter unmountOnExit>
+            {(
+              <Grow in={togglePunchline} mountOnEnter unmountOnExit>
                 <Typography
                   variant="h5"
                   color="initial"
