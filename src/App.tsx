@@ -16,14 +16,12 @@ function App(): JSX.Element {
     useState<boolean>(false);
   const [togglePunchline, setTogglePunchline] = useState<boolean>(false);
   const [toggleShow, setToggleShow] = useState<boolean>(true);
-  const [imgUrl, setImgUrl] = useState<string>("");
 
   const getJoke = async (): Promise<void> => {
     setLoading(true);
     setTogglePunchline(false);
     setShowPunchlineButton(false);
     setToggleShow(true);
-    setImgUrl(`url(./src/assets/quote-left-icon-grey.svg)`);
     try {
       const response = await fetch(
         "https://mwks-joke-service.azurewebsites.net/api/joke/random"
@@ -85,7 +83,7 @@ function App(): JSX.Element {
                 sx={{
                   height: "75px",
                   minWidth: "100px",
-                  backgroundImage: imgUrl,
+                  backgroundImage: `url(./src/assets/quote-left-icon-grey.svg)`,
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "left",
                   textAlign: "right",
@@ -119,7 +117,7 @@ function App(): JSX.Element {
             justifyContent="right"
             alignItems="center"
           >
-            {(
+            {
               <Grow in={togglePunchline} mountOnEnter unmountOnExit>
                 <Typography
                   variant="h5"
@@ -138,7 +136,7 @@ function App(): JSX.Element {
                   {punchline}
                 </Typography>
               </Grow>
-            )}
+            }
           </Box>
         </Box>
       </Container>
