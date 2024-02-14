@@ -16,6 +16,7 @@ function App(): JSX.Element {
     useState<boolean>(false);
   const [togglePunchline, setTogglePunchline] = useState<boolean>(false);
   const [toggleShow, setToggleShow] = useState<boolean>(true);
+  const [fetchError, setFetchError] = useState<boolean>(false);
 
   const getJoke = async (): Promise<void> => {
     setLoading(true);
@@ -33,6 +34,7 @@ function App(): JSX.Element {
       setShowPunchlineButton(true);
       console.log(data);
     } catch (error) {
+      setFetchError(true);
       throw new Error("THERE WAS AN ERROR LOADING YOUR JOKE");
     }
   };
@@ -62,83 +64,97 @@ function App(): JSX.Element {
           </Link>
         </Box>
         <Divider />
-        <Box py={4}>
-          {loading ? (
-            <Typography
-              align="center"
-              variant="body1"
-              color="initial"
-              sx={{ height: "75px" }}
-            >
-              LOADING YOUR JOKE...
-            </Typography>
-          ) : (
-            <Grow in={!loading} mountOnEnter unmountOnExit>
-              <Typography
-                variant="h5"
-                color="initial"
-                display={"flex"}
-                justifyContent={"flex-start"}
-                alignItems={"center"}
-                sx={{
-                  height: "75px",
-                  minWidth: "100px",
-                  backgroundImage: `url(./src/assets/quote-left-icon-grey.svg)`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "left",
-                  textAlign: "right",
-                }}
+        {!fetchError ? (
+          <>
+            <Box py={4}>
+              {loading ? (
+                <Typography
+                  align="center"
+                  variant="body1"
+                  color="initial"
+                  sx={{ height: "75px" }}
+                >
+                  LOADING YOUR JOKE...
+                </Typography>
+              ) : (
+                <Grow in={!loading} mountOnEnter unmountOnExit>
+                  <Typography
+                    variant="h5"
+                    color="initial"
+                    display={"flex"}
+                    justifyContent={"flex-start"}
+                    alignItems={"center"}
+                    sx={{
+                      height: "75px",
+                      minWidth: "100px",
+                      backgroundImage: `url(./src/assets/quote-left-icon-grey.svg)`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "left",
+                      textAlign: "right",
+                    }}
+                  >
+                    {joke}
+                  </Typography>
+                </Grow>
+              )}
+              <Box
+                component="span"
+                m={1}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                py={4}
               >
-                {joke}
-              </Typography>
-            </Grow>
-          )}
-          <Box
-            component="span"
-            m={1}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
+                {showPunchlineButton && (
+                  <PunchlineButton
+                    togglePunchline={togglePunchline}
+                    toggleShow={toggleShow}
+                    setTogglePunchline={setTogglePunchline}
+                    setToggleShow={setToggleShow}
+                  />
+                )}
+              </Box>
+              <Box
+                component="span"
+                m={1}
+                display="flex"
+                justifyContent="right"
+                alignItems="center"
+              >
+                {
+                  <Grow in={togglePunchline} mountOnEnter unmountOnExit>
+                    <Typography
+                      variant="h5"
+                      color="initial"
+                      display={"flex"}
+                      justifyContent={"flex-end"}
+                      alignItems={"center"}
+                      sx={{
+                        height: "75px",
+                        minWidth: "100px",
+                        backgroundImage: `url(${"./src/assets/quote-right-icon-grey.svg"})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "right",
+                      }}
+                    >
+                      {punchline}
+                    </Typography>
+                  </Grow>
+                }
+              </Box>
+            </Box>
+          </>
+        ) : (
+          <Typography
+            align="center"
+            variant="body1"
+            color="red"
+            sx={{ height: "75px" }}
             py={4}
           >
-            {showPunchlineButton && (
-              <PunchlineButton
-                togglePunchline={togglePunchline}
-                toggleShow={toggleShow}
-                setTogglePunchline={setTogglePunchline}
-                setToggleShow={setToggleShow}
-              />
-            )}
-          </Box>
-          <Box
-            component="span"
-            m={1}
-            display="flex"
-            justifyContent="right"
-            alignItems="center"
-          >
-            {
-              <Grow in={togglePunchline} mountOnEnter unmountOnExit>
-                <Typography
-                  variant="h5"
-                  color="initial"
-                  display={"flex"}
-                  justifyContent={"flex-end"}
-                  alignItems={"center"}
-                  sx={{
-                    height: "75px",
-                    minWidth: "100px",
-                    backgroundImage: `url(${"./src/assets/quote-right-icon-grey.svg"})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right",
-                  }}
-                >
-                  {punchline}
-                </Typography>
-              </Grow>
-            }
-          </Box>
-        </Box>
+            THERE WAS AN ERROR LOADING YOUR JOKE
+          </Typography>
+        )}
       </Container>
     </>
   );
