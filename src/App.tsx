@@ -28,11 +28,11 @@ function App(): JSX.Element {
         "https://mwks-joke-service.azurewebsites.net/api/joke/random"
       );
       const data = await response.json();
+      console.log("🚀 ~ getJoke ~ data:", data)
       setLoading(false);
       setJoke(data.joke);
       setPunchline(data.punchLine);
       setShowPunchlineButton(true);
-      console.log(data);
     } catch (error) {
       setFetchError(true);
       throw new Error("THERE WAS AN ERROR LOADING YOUR JOKE");
