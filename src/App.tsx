@@ -28,7 +28,7 @@ function App(): JSX.Element {
         "https://mwks-joke-service.azurewebsites.net/api/joke/random"
       );
       const data = await response.json();
-      console.log("🚀 ~ getJoke ~ data:", data)
+      console.log("🚀 ~ getJoke ~ data:", data);
       setLoading(false);
       setJoke(data.joke);
       setPunchline(data.punchLine);
